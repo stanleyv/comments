@@ -4,40 +4,40 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Comment = mongoose.model('Comment');
 
-router.get('/comments', function(req, res, next) {
-  Comment.find(function(err, comments){
+router.get('/candidates', function(req, res, next) {
+  Comment.find(function(err, candidates){
     if(err){ return next(err); }
-    res.json(comments);
+    res.json(candidates);
   });
 });
 
-router.post('/comments', function(req, res, next) {
-  var comment = new Comment(req.body);
-  comment.save(function(err, comment){
+router.post('/candidates', function(req, res, next) {
+  var candidate = new Comment(req.body);
+  candidate.save(function(err, candidate){
     if(err){ return next(err); }
-    res.json(comment);
+    res.json(candidate);
   });
 });
 
-router.param('comment', function(req, res, next, id) {
+router.param('candidate', function(req, res, next, id) {
   var query = Comment.findById(id);
-  query.exec(function (err, comment){
+  query.exec(function (err, candidate){
     if (err) { return next(err); }
-    if (!comment) { return next(new Error("can't find comment")); }
-    req.comment = comment;
+    if (!candidate) { return next(new Error("can't find candidate")); }
+    req.candidate = candidate;
     return next();
   });
 });
-router.get('/comments/:comment', function(req, res) {
-  res.json(req.comment);
+router.get('/candidates/:candidate', function(req, res) {
+  res.json(req.candidate);
 });
-router.put('/comments/:comment/upvote', function(req, res, next) {
-  req.comment.upvote(function(err, comment){
+router.put('/candidates/:candidate/upvote', function(req, res, next) {
+  req.candidate.upvote(function(err, candidate){
     if (err) { return next(err); }
-    res.json(comment);
+    res.json(candidate);
   });
 });
-router.delete('/comments/:comment', function(req, res) {
+router.delete('/candidates/:candidate', function(req, res) {
   console.log("in Delete");
   req.comment.remove();
   res.sendStatus(200);
